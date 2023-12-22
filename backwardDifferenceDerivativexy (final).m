@@ -1,4 +1,4 @@
-function derivative_at_evaluation_point = backwardDifferenceDerivativexy(x_values, f_values, evaluation_point, order_of_accuracy)
+function derivative = backwardDifferenceDerivativexy(x_values, f_values, evaluation_point, order_of_accuracy)
   
 % Kiểm tra độ dài của chuỗi đầu vào
     if length(x_values) ~= length(f_values)
@@ -11,18 +11,16 @@ function derivative_at_evaluation_point = backwardDifferenceDerivativexy(x_value
     end
     
     % Tính đạo hàm bằng phương pháp chuỗi Taylor chiều lùi
-    h = x_values(2) - x_values(1); % Giả sử khoảng cách giữa các điểm x là h (đơn giản để tính toán)
+    h = abs(x_values(2) - x_values(1)); % Giả sử khoảng cách giữa các điểm x là h (đơn giản để tính toán)
     
+     % Tìm vị trí của điểm đánh giá
+    evaluation_index = find(x_values == evaluation_point);
+
     % Tính đạo hàm bằng O(h) hoặc O(h^2) tùy thuộc vào order_of_accuracy
     if order_of_accuracy == 1
-        derivative = (f_values(2:end) - f_values(1:end-1)) / h;
+        derivative = (f_values(evaluation_index) - f_values(evaluation_index - 1)) / h;
     else
-        derivative = (f_values(3:end) - 2*f_values(2:end-1) + f_values(1:end-2)) / h^2;
+        derivative = (3*f_values(evaluation_index) - 4*f_values(evaluation_index - 1) + f_values(evaluation_index - 2)) / (2 * h);
     end
     
-    % Tính giá trị đạo hàm tại điểm đánh giá
-    evaluation_index = find(x_values == evaluation_point);
-    derivative_at_evaluation_point = derivative(evaluation_index - 1);
-    
-    fprintf('Đạo hàm chiều lùi tại điểm đánh giá %.2f là: %.4f\n', evaluation_point, derivative_at_evaluation_point);
 end
