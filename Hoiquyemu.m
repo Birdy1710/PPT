@@ -1,5 +1,5 @@
-function [fx,kq]=Hoiquyhammu(x_array,y_array,giatri)
-syms x;    syms x;
+function [fx,kq]=Hoiquyemu(x_array,y_array,giatri)
+    syms x;
     n = length(x_array);
     Y_array = log(y_array);
     sumx = sum(x_array);
@@ -13,9 +13,9 @@ syms x;    syms x;
     a1 = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx^2);
     a0 = y_tb - a1 * x_tb;
     
-    a0=10^a0; 
-    a1=vpa(a1,4);
-    fx= vpa(a0*x.^a1,4);
+    a0=exp(a0);
+    fx= a0*exp(a1*x);
+    fx=vpa(fx,4);
     fx1=str2func(['@(x)', char(fx)]);
     kq=fx1(giatri);
 end
