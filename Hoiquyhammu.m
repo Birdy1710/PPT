@@ -1,20 +1,31 @@
 function [fx,kq]=Hoiquyhammu(x_array,y_array,giatri)
     syms x;
     n = length(x_array);
-    sumx = sum(x_array);
-    sumy = sum(y_array);
-    sumxy = sum(x_array .* y_array);
-    sumx2 = sum(x_array.^2);
+    % Chuyển đổi dữ liệu đầu vào thành logarithm tự nhiên
+    X_array = log(x_array);
+    Y_array = log(y_array);
     
-    x_tb = sumx / n;
-    y_tb = sumy / n;
+    % Tính tổng cần thiết
+    sumX = sum(X_array);
+    sumY = sum(Y_array);
+    sumXY = sum(X_array .* Y_array);
+    sumX2 = sum(X_array.^2);
     
-    a1 = (n * sumxy - sumx * sumy) / (n * sumx2 - sumx^2);
-    a0 = y_tb - a1 * x_tb;
+    % Tính trung bình
+    x_tb = sumX / n;
+    y_tb = sumY / n;
     
-    a0=exp(a0);
-    fx= a0*exp(a1*x);
-    fx=vpa(fx,4);
-    fx1=str2func(['@(x)', char(fx)]);
-    kq=fx1(giatri);
+    % Tính hệ số hồi quy
+    b = (n * sumXY - sumX * sumY) / (n * sumX2 - sumX^2);
+    a = exp(y_tb - b * x_tb);
+    
+    % Xây dựng hàm hồi quy
+    fx = a * x^b;
+    
+    % Hiển thị hàm hồi quy
+    disp('Hàm hồi quy:');
+    disp(fx);
+    
+    % Tính giá trị dự đoán cho giá trị đầu vào đã cho
+    kq = a * giatri^b;
 end
