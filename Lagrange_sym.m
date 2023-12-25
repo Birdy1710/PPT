@@ -1,4 +1,5 @@
-function [result] = Lagrange(xa, ya, x)
+function [p] = Lagrange_sym(xa, ya, x)
+syms x;
 n = length(xa);
 sum = 0;
 for i = 1:n
@@ -8,11 +9,9 @@ for i = 1:n
             f = f*(x - xa(j))/(xa(i) - xa(j));%𝐿𝑖(𝑥)*𝑓(𝑥𝑖)
         end
     end
-sum =  sum + f;
+sum =  sum + f; %sum->phương trình cần tìm chứa x
 end
-result = sum
+p = sum % p(x) là tổng chuỗi với x là biến
 end
-
 
  
-
